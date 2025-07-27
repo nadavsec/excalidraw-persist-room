@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 
-const ROOM_SERVER_URL = 'http://localhost:3002'; // Default for local dev
+const ROOM_SERVER_URL = import.meta.env.VITE_ROOM_SERVER_URL || 'http://localhost:3002';
 
 let socket: Socket | null = null;
 let currentRoom: string | null = null;
