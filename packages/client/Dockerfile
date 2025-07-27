@@ -15,6 +15,12 @@ COPY pnpm-lock.yaml pnpm-workspace.yaml package.json ./
 # Copy client package
 COPY packages/client ./packages/client/
 
+# Declare the build argument
+ARG VITE_ROOM_SERVER_URL
+
+# Set the environment variable from the build argument
+ENV VITE_ROOM_SERVER_URL=$VITE_ROOM_SERVER_URL
+
 # Install dependencies
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 

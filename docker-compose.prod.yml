@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: ./packages/client/Dockerfile
+      args:
+        - VITE_ROOM_SERVER_URL=http://localhost:3002 # For local Docker, use host. For deployed, this will be your domain.
+    ports:
+      - '3000:80' # Expose client on port 3000
+    depends_on:
+      - server
+      - room
+    restart: unless-stopped
+    networks:
+      - excalidraw-network
+
+  server:
+    build:
+      context: .
+      dockerfile: ./packages/server/Dockerfile
+    ports:
+      - '4000:4000' # Expose server on port 4000
+    volumes:
+      - excalidraw_data:/app/data
+    environment:
+      - PORT=4000
+      - NODE_ENV=production
+      - DB_PATH=/app/data/database.sqlite
+    restart: unless-stopped
+    networks:
+      - excalidraw-network
+  
+  room:
+    build:
+      context: .
+      dockerfile: ./packages/room/Dockerfile
+    ports:
+      - '3002:3002' # Expose room on port 3002
+    restart: unless-stopped
+    networks:
+      - excalidraw-network
+
+networks:
+  excalidraw-network:
+    driver: bridge
+
+volumes:
+  excalidraw_data:
+    driver: local 
