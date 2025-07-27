@@ -40,7 +40,7 @@ export const useExcalidrawEditor = (boardId: string | undefined) => {
       const socket = getSocket(boardId);
       currentSocket.current = socket;
 
-      const handleRemoteUpdate = (encryptedData: ArrayBuffer, iv: Uint8Array) => {
+      const handleRemoteUpdate = (encryptedData: ArrayBuffer, _iv: Uint8Array) => {
         try {
           const jsonString = new TextDecoder().decode(encryptedData);
           const remoteElements = JSON.parse(jsonString);
